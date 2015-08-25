@@ -35,20 +35,22 @@
         }
 
         function getStudents() {
-            $query = $GLOBALS['DB']->query("SELECT student_id FROM classes_taken WHERE course_id = {$this->getId()};");
-            $student_ids = $query->fetchAll(PDO::FETCH_ASSOC);
-            $students = Array();
-            foreach($student_ids as $id) {
-                $student_id = $id['student_id'];
-                $result = $GLOBALS['DB']->query("SELECT * FROM students WHERE id = {$student_id};");
-                $returned_student = $result->fetchAll(PDO::FETCH_ASSOC);
-                $student_name = $returned_student[0]['student_name'];
-                $id = $returned_student[0]['id'];
-                $enrollment_date = $returned_student[0]['enrollment_date'];
+            $selected_student = $GLOBALS['DB']->query("SELECT students.* FROM
+                courses JOIN classes_taken ON  (courses.id = classes_taken.course_id)
+                         JOIN students ON (classes_taken.student_id = students.id)
+                         WHERE courses.id = {$this->getId()};");
+            $found_students = $selected_student->fetchAll(PDO::FETCH_ASSOC);
+
+            //returning the students for one particular course
+            $students_course = Array();
+            foreach($found_students as $student) {
+                $student_name = $student['student_name'];
+                $id = $student['id'];
+                $enrollment_date = $student['enrollment_date'];
                 $new_student = new Student($student_name, $id, $enrollment_date);
-                array_push($students, $new_student);
+                array_push($students_course, $new_student);
             }
-            return $students;
+            return $students_course;
         }
 
         function update($new_course_name) {
@@ -82,7 +84,7 @@
         static function deleteAll() {
             $GLOBALS['DB']->exec("DELETE FROM courses;");
         }
-        
+
         static function find($search_id){
             $found_course = null;
             $courses = Course::getAll();
