@@ -36,7 +36,7 @@
 
         function getStudents() {
             $selected_student = $GLOBALS['DB']->query("SELECT students.* FROM
-                courses JOIN classes_taken ON  (courses.id = classes_taken.course_id)
+                courses  JOIN classes_taken ON  (courses.id = classes_taken.course_id)
                          JOIN students ON (classes_taken.student_id = students.id)
                          WHERE courses.id = {$this->getId()};");
             $found_students = $selected_student->fetchAll(PDO::FETCH_ASSOC);

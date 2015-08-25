@@ -30,6 +30,8 @@
         return $app['twig']->render('index.html.twig', array('courses' => Course::getAll(), 'students' => Student::getAll()));
     });
 
+    //Begin Student Functionality
+
     //Students page, lists, add, edit, or delete a student links.
     $app->get("/students", function() use ($app) {
         return $app['twig']->render('students.html.twig', array('students' => Student::getAll()));
@@ -39,7 +41,6 @@
     $app->post("/students", function() use ($app) {
         $student_name = $_POST['student_name'];
         $enrollment_date = $_POST['enrollment_date'];
-        // $id = null;
         $student = new Student($student_name, $id=null, $enrollment_date);
         $student->save();
         return $app['twig']->render('students.html.twig', array('students' => Student::getAll()));
@@ -71,6 +72,12 @@
         $student = Student::find($id);
         $student->deleteOne();
         return $app['twig']->render('students.html.twig', array('students' => Student::getAll()));
+    });
+
+    //Delete All Students from DB
+    $app->post("/delete_students", function() use ($app) {
+        Student::deleteAll();
+        return $app['twig']->render('index.html.twig');
     });
 
     // -------------------------End Student Routes -------------------------
@@ -107,11 +114,6 @@
         return $app['twig']->render('student.html.twig', array('student' => $student, 'students' => Student::getAll(), 'courses' => $student->getCourses(), 'all_courses' => Course::getAll()));
     });
 
-    //
-    $app->post("/delete_students", function() use ($app) {
-        Student::deleteAll();
-        return $app['twig']->render('index.html.twig');
-    });
 
     //
     $app->post("/delete_courses", function() use ($app) {
