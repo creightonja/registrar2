@@ -1,0 +1,34 @@
+<html>
+    <head>
+        <title>Registrar</title>
+    </head>
+    <body>
+        <h1>Courses</h1>
+
+        {% if courses is not empty %}
+            <p>Here are all your courses:</p>
+            <ul>
+                {% for course in courses %}
+                    <li><a href="/courses/{{ course.getId }}">{{ course.getCourseName }}</a> {{ course.getCourseNumber }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+
+            <form action='/courses' method='post'>
+                <label for='course_name'>Course Name</label>
+                <input id='course_name' name='course_name' type='text'>
+
+                <label for='course_number'>Course Number</label>
+                <input id='course_number' name='course_number' type='text'>
+
+                <button type='submit'>Add Course</button>
+            </form>
+
+            <form action='/delete_courses' method='post'>
+                <button type='submit'>Clear</button>
+            </form>
+
+            <p><a href='/'>Home</a></p>
+
+    </body>
+</html>

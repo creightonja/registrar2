@@ -211,13 +211,13 @@
 
             //Act
             $test_student->addCourse($test_course);
-            $result = $test_student->getCourse();
+            $result = $test_student->getCourses();
 
             //Assert
             $this->assertEquals([$test_course], $result);
         }
 
-        function testGetCourse()
+        function testGetCourses()
         {
             //Arrange
             $course_name = "History";
@@ -243,7 +243,7 @@
             $test_student->addCourse($test_course2);
 
             //Assert
-            $this->assertEquals($test_student->getCourse(), [$test_course, $test_course2]);
+            $this->assertEquals($test_student->getCourses(), [$test_course, $test_course2]);
         }
 
         function testDelete() {

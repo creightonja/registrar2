@@ -38,24 +38,6 @@
             $this->id = $GLOBALS['DB']->lastInsertId();
         }
 
-        function getCourses()
-        {
-            $query = $GLOBALS['DB']->query("SELECT course_id FROM classes_taken WHERE student_id={$this->getId()};");
-            $course_ids = $query->fetchAll(PDO::FETCH_ASSOC);
-            $courses = array();
-            foreach ($course_ids as $id) {
-                $course_id = $id['course_id'];
-                $result = $GLOBALS['DB']->query("SELECT * FROM courses WHERE id = {$course_id};");
-                $returned_course = $result->fetchAll(PDO::FETCH_ASSOC);
-                $course_name = $returned_course[0]['course_name'];
-                $id = $returned_course[0]['id'];
-                $course_number = $returned_course[0]['course_number'];
-                $new_course = new Course($course_name, $id, $course_number);
-                array_push($courses, $new_course);
-            }
-            return $courses;
-        }
-
         function update($new_student_name) {
             $GLOBALS['DB']->exec("UPDATE students SET student_name = '{$new_student_name}' WHERE id = {$this->getId()};");
             $this->setStudentName($new_student_name);
@@ -71,7 +53,7 @@
             $GLOBALS['DB']->exec("INSERT INTO classes_taken (student_id, course_id) VALUES ({$this->getId()}, {$course->getId()});");
         }
 
-        function getCourse()
+        function getCourses()
         {
             //join statement
             $selected_course = $GLOBALS['DB']->query("SELECT courses.* FROM

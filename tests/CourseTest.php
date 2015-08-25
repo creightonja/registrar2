@@ -265,7 +265,7 @@
             $test_course->deleteOne();
 
             //Assert
-            $this->assertEquals([], $test_student->getCourse());
+            $this->assertEquals([], $test_student->getCourses());
         }
 
 
