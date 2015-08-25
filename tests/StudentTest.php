@@ -263,10 +263,10 @@
             //Act
             $test_student->addCourse($test_course);
             $test_student->deleteOne();
-            
+
             //Assert
             $this->assertEquals([], $test_course->getStudents());
         }
-
+            //Finished all student tests
     }
 ?>

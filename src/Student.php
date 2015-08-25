@@ -73,10 +73,12 @@
 
         function getCourse()
         {
+            //join statement
             $selected_course = $GLOBALS['DB']->query("SELECT courses.* FROM
                 students JOIN classes_taken ON (students.id = classes_taken.student_id)
                          JOIN courses ON (classes_taken.course_id = courses.id)
                          WHERE students.id = {$this->getId()};");
+            //convert output of the join statement into an array
             $found_courses = $selected_course->fetchAll(PDO::FETCH_ASSOC);
             $student_courses = array();
             foreach($found_courses as $found_course) {
